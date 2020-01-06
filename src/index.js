@@ -30,7 +30,7 @@ export default class DbPlugin extends Sequelize {
 
   async add(slug, model, settings) {
     const definedModel = this.define(slug, model, settings || { timestamps: false });
-    await this.safeSync(this.Item);
+    await this.safeSync(definedModel);
     return definedModel;
   }
 
