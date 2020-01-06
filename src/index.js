@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize';
 
-export default class extends Sequelize {
+export default class DbPlugin extends Sequelize {
   constructor(henta) {
     // eslint-disable-next-line object-curly-newline
     const { name, user, pass, options } = henta.config.private.database;
@@ -28,11 +28,10 @@ export default class extends Sequelize {
     }
   }
 
-  defineCached(name, model, settings, cacheSettings) {
-    return this.sequelizeRedis.getModel(
-      super.define(name, model, settings),
-      cacheSettings || { ttl: 60 * 60 * 24 }
-    );
+  async add(slug, model, settings) {
+    const definedModel = dbPlugin.define(slug, model, settings || { timestamps: false });
+    await this.safeSync(this.Item);
+    return definedModel;
   }
 
   applySaveCenter(modelPrototype) {

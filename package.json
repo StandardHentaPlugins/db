@@ -2,9 +2,10 @@
   "main": "src/index.js",
   "type": "module",
   "slug": "common/db",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "remote": "StandardHentaPlugins/db",
   "dependencies": {
+    "pg": "^7.17.0",
     "sequelize": "^5.21.2"
   }
 }
