@@ -1,7 +1,7 @@
 {
   "main": "lib/index.js",
   "slug": "common/db",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "remote": "StandardHentaPlugins/db",
   "scripts": {
     "build": "tsc --project tsconfig.json",
