@@ -1,8 +1,8 @@
 {
+  "name": "@henta/common-bot",
   "main": "lib/index.js",
-  "slug": "common/db",
   "version": "2.0.1",
-  "remote": "StandardHentaPlugins/db",
+  "type": "module",
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "release-it": "yarn version --patch && git push --follow-tags"
