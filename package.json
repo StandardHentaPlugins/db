@@ -8,7 +8,7 @@
     "release-it": "yarn version --patch && git push --follow-tags"
   },
   "dependencies": {
-    "pg": "^7.17.0",
-    "sequelize": "^5.21.2"
+    "pg": "^8.4.2",
+    "sequelize": "^6.3.5"
   }
 }

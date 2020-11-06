@@ -1,9 +1,11 @@
-import { Sequelize } from 'sequelize';
+import * as SequelizeLib from 'sequelize';
 
-export default class DbPlugin extends Sequelize {
+export default class DbPlugin extends SequelizeLib.Sequelize {
   henta: any;
   markedASave: Set<unknown>;
   markASave: () => void;
+  op: any;
+  types: any;
   constructor(henta) {
     // eslint-disable-next-line object-curly-newline
     if (typeof henta.config.private.database === 'object') {
@@ -16,10 +18,17 @@ export default class DbPlugin extends Sequelize {
         define: {
           client_encoding: 'UTF8',
           charset: 'utf8mb4'
+        },
+        pool: {
+          max: 5,
+          idle: 30000,
+          acquire: 60000,
         }
       } as any);
     }
     this.henta = henta;
+    this.op = SequelizeLib['default'].Op;
+    this.types = SequelizeLib['default'].DataTypes;
 
     const markedASave = new Set();
     function markASave() {
@@ -69,7 +78,7 @@ export default class DbPlugin extends Sequelize {
 
     await model.sync();
     const { options } = model;
-    const queryInterface = model.QueryInterface;
+    const queryInterface = this.getQueryInterface();
     const tableName = model.getTableName(options);
 
     const columns = await queryInterface.describeTable(tableName);
