@@ -6,6 +6,7 @@ export default class DbPlugin extends SequelizeLib.Sequelize {
   markASave: () => void;
   op: any;
   types: any;
+
   constructor(henta) {
     // eslint-disable-next-line object-curly-newline
     if (typeof henta.config.private.database === 'object') {
@@ -14,7 +15,7 @@ export default class DbPlugin extends SequelizeLib.Sequelize {
       super(name, user, pass, options);
     } else {
       super(henta.config.private.database, {
-        logging: false,
+        logging: henta.config.public.dbLogging ? henta.log : false,
         define: {
           client_encoding: 'UTF8',
           charset: 'utf8mb4'
@@ -32,6 +33,11 @@ export default class DbPlugin extends SequelizeLib.Sequelize {
 
     const markedASave = new Set();
     function markASave() {
+      if (this.$forceSaves.find(v => this.changed(v))) {
+        this.$save();
+        return;
+      }
+
       markedASave.add(this);
     }
 
@@ -57,7 +63,8 @@ export default class DbPlugin extends SequelizeLib.Sequelize {
     return definedModel;
   }
 
-  applySaveCenter(modelPrototype) {
+  applySaveCenter(modelPrototype, forceSaves = []) {
+    modelPrototype.$forceSaves = forceSaves;
     modelPrototype.$save = modelPrototype.save;
     modelPrototype.save = this.markASave;
   }
