@@ -27,6 +27,10 @@ export default class DbPlugin extends SequelizeLib.Sequelize {
         }
       } as any);
     }
+
+    if (this['options']['dialect'] === 'postgres') {
+      this['dialect'].connectionManager.lib.defaults.parseInt8 = true;
+    }
     this.henta = henta;
     this.op = SequelizeLib['default'].Op;
     this.types = SequelizeLib['default'].DataTypes;
